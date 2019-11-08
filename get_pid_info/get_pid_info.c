@@ -49,16 +49,16 @@ SYSCALL_DEFINE2(get_pid_info, struct pid_info __user*, retinfo, int, pid)
 		kfree(tmp);
 		return -ENOMEM;
 	}
-	spin_lock(root.dentry->d_lock);
+	spin_lock(&root.dentry->d_lock);
 	dtmp = dentry_path_raw(root.dentry, buf, PATH_MAX);
-	spin_unlock(root.dentry->d_lock);
+	spin_unlock(&root.dentry->d_lock);
 	if (!dtmp)
 		goto dentry_failed;
 	strcpy(tmp->root_path, dtmp);
 
-	spin_lock(pwd.dentry->d_lock);
+	spin_lock(&pwd.dentry->d_lock);
 	dtmp = dentry_path_raw(pwd.dentry, buf, PATH_MAX);
-	spin_unlock(pwd.dentry->d_lock);
+	spin_unlock(&pwd.dentry->d_lock);
 	if (!dtmp)
 		goto dentry_failed;
 	strcpy(tmp->pwd_path, dtmp);
