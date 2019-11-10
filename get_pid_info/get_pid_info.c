@@ -41,6 +41,8 @@ SYSCALL_DEFINE2(get_pid_info, struct pid_info __user*, retinfo, int, pid)
 	task_pid = get_pid_task(pid_struct, PIDTYPE_PID);
 	if (!task_pid)
 		return -ESRCH;
+	if (!task_pid->fs)
+		return -ENOENT;
 	tmp = kmalloc(sizeof(struct pid_info), GFP_KERNEL);
 	if (!tmp)
 		return -ENOMEM;
