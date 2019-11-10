@@ -6,7 +6,14 @@ all:
 	cp -R $(SRC) $(DEST)
 	cp syscalls.h $(DEST)/include/linux
 	cp syscall_64.tbl $(DEST)/arch/x86/entry/syscalls
+	cp Makefile.kernel $(DEST)/Makefile
+	mv $(DEST)/.config $(DEST)/.config.old
+	cp config $(DEST)/.config
 	make -C $(DEST) -j8
 	cp $(DEST)/arch/x86/boot/bzImage /boot/vmlinuz-process_and_memory
 	cp $(DEST)/System.map /boot/System.map-process_and_memory
-	gcc test.c -o test
+	gcc -Wall -Werror -Wextra test.c -o test
+	reboot
+
+clean:
+	rm -f test
